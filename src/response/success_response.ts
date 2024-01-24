@@ -78,13 +78,4 @@ export class SuccessResponse {
         })
     }
     
-    static generateSuccess(res:Response , token:string, data:GenerateMnemonicResponse){
-        return res.status(200).json({
-            code: 1008,
-            message: "success",
-            status: "Generate Mnemonic success",
-            token: token,
-            data: data
-        })
-    }
 }

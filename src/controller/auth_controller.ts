@@ -25,8 +25,6 @@ export class AuthController implements Controller {
         key_val.setVal(email)
 
         db.query(userq.show(key_val), (error, result)=>{
-            console.log(error);
-            console.log(result);
             if(error) return 
             
             this.auth_user.setId(result[0].id)

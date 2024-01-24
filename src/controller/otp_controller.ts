@@ -9,6 +9,7 @@ import { GenerateOTPResponse } from "../model/response/generate_response";
 import { SuccessResponse } from "../response/success_response";
 import { VerifyOTPRequest } from "../model/request/verifyotp_request";
 import { JwtUtil } from "../util/jwt_util";
+import { AuthController } from "./auth_controller";
 const twofactor = require("node-2fa");
 
 export class OTPController {
@@ -61,6 +62,9 @@ export class OTPController {
     static verify(req: Request, res: Response) {
         const otpr = new VerifyOTPRequest()
         const vtokenq = new VerifyTokenQuery()
+        const email = AuthController.get_auth_user().getEmail()
+        const token = JwtUtil.getJwt(email)
+        
         otpr.setOTPCode(req.body["otp_code"])
         otpr.setVerifyToken(req.body["verify_token"])
 
@@ -71,10 +75,14 @@ export class OTPController {
             if (error) return FailedResponse.queryFailed(res, "")
             if (result[0] == null) return FailedResponse.queryFailed(res, "")
 
+            console.log("error");
             if (result[0].secret_key != "") {
+                console.log(error);
+                console.log(result);
+                
 
-                const token = JwtUtil.getJwt(result[0].email)
                 const verify = twofactor.verifyToken(result[0].secret_key, otpr.getOTPCode().toString());
+                
                 if (verify.delta == 0) {
                     SuccessResponse.verifyOTPSuccess(res, token)
                 } else {
