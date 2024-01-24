@@ -1,7 +1,8 @@
 import { UserMigration } from "./user_migrations"
 import db from '../database'
 import { StatusMigration } from "./status_migrations"
-import { BlockchainMigration } from "./blockchain_migrate"
+import { BlockchainMigration } from "./blockchain_migrations"
+import { WalletMigration } from "./wallet_migrations"
 
 function main(){
     const database = 'wallet_api_db'
@@ -10,6 +11,7 @@ function main(){
     StatusMigration.migrate()
     UserMigration.migrate()
     BlockchainMigration.migrate()
+    WalletMigration.migrate()
 
     db.end()
 

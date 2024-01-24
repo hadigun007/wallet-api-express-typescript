@@ -1,3 +1,4 @@
+import { Keyval } from '../../model/keyval_model';
 import { UserModel } from '../../model/user_model';
 import { Moment } from '../../util/moment';
 import db from '../database'
@@ -23,20 +24,11 @@ export class UserQuery implements Query {
         `
     }
 
-    show(): string {
-        throw new Error("Method not implemented.");
+    show(keyval:Keyval): string {
+        return `SELECT * from users WHERE ${keyval.getKey()} = ${db.escape(keyval.getVal())};`
     }
     delete(): string {
         throw new Error("Method not implemented.");
     }
 }
 
-// db.query(`
-//         INSERT INTO users
-//         (id, name, email, password, status_id, role)
-//         VALUES 
-//         (1, 'ROOT', 'root@mail.com', '$2a$10$3zoB8RuTA1JfVRCPgESWQuEGNdxqCqzX9K0KNbJHsF0iN04fVQp/y', 3, 'root');
-//         `,(error, result)=>{
-//             if (error) return console.log(error)
-//             console.log(`✅ seeder table ${this.table_name} berhasil`)
-//         } )

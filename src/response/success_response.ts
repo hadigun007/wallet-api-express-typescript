@@ -1,6 +1,7 @@
 import {Response} from 'express'
 import { LoginResponse } from '../model/response/login_response'
 import { GenerateOTPResponse } from '../model/response/generate_response'
+import { GenerateMnemonicResponse } from '../model/response/generate_mnemonic_response'
 
 export class SuccessResponse {
     static indexSuccess(res: Response, token:string, data:any){
@@ -74,6 +75,16 @@ export class SuccessResponse {
             status: "Verify OTP success",
             token: token,
             data: null
+        })
+    }
+    
+    static generateSuccess(res:Response , token:string, data:GenerateMnemonicResponse){
+        return res.status(200).json({
+            code: 1008,
+            message: "success",
+            status: "Generate Mnemonic success",
+            token: token,
+            data: data
         })
     }
 }

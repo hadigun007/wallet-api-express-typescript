@@ -24,6 +24,7 @@
     "@types/mysql": "^2.15.25",
     "2fa": "^0.1.2",
     "bcrypt": "^5.1.1",
+    "bip39": "^3.1.0",
     "cors": "^2.8.5",
     "express": "^4.18.2",
     "express-rate-limit": "^7.1.5",

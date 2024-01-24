@@ -1,4 +1,9 @@
 {
+    "app":{
+        "host":"127.0.0.1",
+        "port":"8080",
+        "env":"development"
+    },
     "api-key":"wjf98e9bvicpuwbapgc",
     "database":{
      "host":"localhost",
