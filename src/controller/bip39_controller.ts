@@ -12,6 +12,7 @@ import { Bip39Query } from '../database/query/bip39_query';
 import { Bip39Model } from '../model/bip39_model';
 import { Crypto } from '../util/crypto';
 import { ToArray } from '../util/to_array';
+import { Keyval } from '../model/keyval_model';
 
 
 export class Bip39Controller implements Controller{
@@ -33,7 +34,7 @@ export class Bip39Controller implements Controller{
 
     store(req:Request, res:Response):any {
         const bip39q = new Bip39Query()
-        const request_data = new WalletModel()
+        const request_data = new Bip39Model()
         const email = AuthController.get_auth_user().getEmail()
         const token = JwtUtil.getJwt(email)
         const mnemonic = generateMnemonic()
@@ -41,7 +42,7 @@ export class Bip39Controller implements Controller{
         request_data.setName(req.body["name"])
         request_data.setMnemonic(Crypto.encryptData(mnemonic))
     
-        if (WalletModel.validateGenerateMnemonic(request_data) == false) return FailedResponse.bodyFailed(res, token)
+        if (Bip39Model.validateStore(request_data) == false) return FailedResponse.bodyFailed(res, token)
 
         db.query(bip39q.create(request_data), (error, result)=>{
             
@@ -52,11 +53,52 @@ export class Bip39Controller implements Controller{
         })
     }
     
-    show(req: Request, res: Response): Response {
-        throw new Error('Method not implemented.');
+    show(req: Request, res: Response):any {
+        const key_val = new Keyval()
+        const bip39q = new Bip39Query()
+        const request_data = new Bip39Model()
+        const email = AuthController.get_auth_user().getEmail()
+        const token = JwtUtil.getJwt(email)
+
+        key_val.setKey(req.body["key"])
+        key_val.setVal(req.body["value"])
+
+        if(Keyval.validate(key_val) == false) return FailedResponse.bodyFailed(res, "")
+
+        db.query(bip39q.show(key_val), (error, result)=>{
+            if (error) return FailedResponse.queryFailed(res, token)
+            if (result.length == 0) return FailedResponse.queryFailed(res, "")
+
+
+            SuccessResponse.showSuccess(res, token, result[0])
+        })
     }
-    update(req: Request, res: Response): Response {
-        throw new Error('Method not implemented.');
+
+    update(req: Request, res: Response):any {
+        const bip39q = new Bip39Query()
+        const request_data = new Bip39Model()
+        const email = AuthController.get_auth_user().getEmail()
+        const token = JwtUtil.getJwt(email)
+
+        request_data.setId(req.body["id"])
+        request_data.setName(req.body["name"])
+
+        if(Bip39Model.validateUpdate(request_data) == false) return FailedResponse.bodyFailed(res, token)
+
+        db.query(bip39q.edit(request_data), (error, result)=>{
+            console.log(error);
+            
+            if (error) return FailedResponse.queryFailed(res, token)
+            if (result.affectedRows == 0) return FailedResponse.queryFailed(res, token)
+        
+            SuccessResponse.editSuccess(res,token)
+        })
+
+
+        
+
+
+
     }
     destroy(req: Request, res: Response): Response {
         throw new Error('Method not implemented.');

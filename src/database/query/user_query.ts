@@ -5,6 +5,9 @@ import db from '../database'
 import { Query } from './query';
 
 export class UserQuery implements Query {
+    edit(data: any): string {
+        throw new Error('Method not implemented.');
+    }
     index(): string {
         throw new Error("Method not implemented.");
     }

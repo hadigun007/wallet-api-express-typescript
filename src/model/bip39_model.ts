@@ -3,6 +3,10 @@ export class Bip39Model {
     name!:string 
     mnemonic!:string 
 
+    setId(id:string){
+        this.id = id
+    }
+    
     setMnemonic(mnemonic:string){
         this.mnemonic = mnemonic
     }
@@ -23,7 +27,13 @@ export class Bip39Model {
         return this
     }
     
-    static validateGenerateMnemonic(data:Bip39Model):boolean{
+    static validateStore(data:Bip39Model):boolean{
+        if(data.getName() == null ||data.getName().length == 0){
+            return false
+        }
+        return true
+    }
+    static validateUpdate(data:Bip39Model):boolean{
         if(data.getName() == null ||data.getName().length == 0){
             return false
         }

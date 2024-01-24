@@ -87,4 +87,14 @@ export class SuccessResponse {
         })
     }
     
+    static editSuccess(res: Response, token:string){
+        return res.status(200).json({
+            code: 1009,
+            message: "success",
+            status: "Edit data Success",
+            token: token,
+            data: null
+        })
+    }
+    
 }

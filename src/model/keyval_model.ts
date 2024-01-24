@@ -20,4 +20,10 @@ export class Keyval {
     getPayload():Keyval{
         return this
     }
+
+    static validate(data:Keyval):boolean{
+        if(data.getKey() == null || data.getKey() == undefined || data.getKey() == "" ||
+        data.getVal() == null || data.getVal() == undefined || data.getVal() == "") return false
+        return true
+    }
 }
