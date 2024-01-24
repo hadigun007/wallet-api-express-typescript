@@ -10,7 +10,7 @@ export class WalletMigration {
         })
 
         db.query(`
-        CREATE TABLE blockchains (
+        CREATE TABLE wallets (
             id INT PRIMARY KEY AUTO_INCREMENT,
             chain INT NOT NULL,
             name VARCHAR(255) UNIQUE NOT NULL,
