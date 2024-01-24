@@ -10,6 +10,7 @@ import Controller from './controller';
 import db from '../database/database'
 import { Bip39Query } from '../database/query/bip39_query';
 import { Bip39Model } from '../model/bip39_model';
+import { Crypto } from '../util/crypto';
 
 
 export class Bip39Controller implements Controller{
@@ -21,9 +22,8 @@ export class Bip39Controller implements Controller{
         const mnemonic = generateMnemonic()
 
         request_data.setName(req.body["name"])
-        request_data.setMnemonic(mnemonic)
-        
-        
+        request_data.setMnemonic(Crypto.encryptData(mnemonic))
+    
         if (WalletModel.validateGenerateMnemonic(request_data) == false) return FailedResponse.bodyFailed(res, token)
 
         db.query(bip39q.create(request_data), (error, result)=>{
