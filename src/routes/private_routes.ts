@@ -11,6 +11,7 @@ private_route.use(middleware)
 
 private_route.post('/user/create', userc.store)
 
+private_route.get('/bip39/index', bip39.index)
 private_route.post('/bip39/store', bip39.store)
 
 

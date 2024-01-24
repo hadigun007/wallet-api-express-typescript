@@ -5,7 +5,7 @@ import { Moment } from "../../util/moment";
 
 export class Bip39Query implements Query {
     index(): string {
-        throw new Error("Method not implemented.");
+        return `SELECT * FROM bip39;`
     }
     create(data: Bip39Model): string {
         return `

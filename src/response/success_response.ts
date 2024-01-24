@@ -77,5 +77,14 @@ export class SuccessResponse {
             data: null
         })
     }
+    static indexDataEmpty(res: Response, token:string){
+        return res.status(200).json({
+            code: 1008,
+            message: "success",
+            status: "But Data Empty",
+            token: token,
+            data: null
+        })
+    }
     
 }

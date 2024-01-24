@@ -11,14 +11,31 @@ import db from '../database/database'
 import { Bip39Query } from '../database/query/bip39_query';
 import { Bip39Model } from '../model/bip39_model';
 import { Crypto } from '../util/crypto';
+import { ToArray } from '../util/to_array';
 
 
 export class Bip39Controller implements Controller{
+
+    index(req: Request, res: Response):any {
+        const bip39q = new Bip39Query()
+        const email = AuthController.get_auth_user().getEmail()
+        const token = JwtUtil.getJwt(email)
+
+        db.query(bip39q.index(), (error, result)=>{
+            if (error) return FailedResponse.queryFailed(res, token)
+            if (result.length == 0) return SuccessResponse.indexDataEmpty(res, "")
+            
+            const response_data = ToArray.listBip39ToArray(result)
+
+            SuccessResponse.indexSuccess(res, token, response_data)
+        })
+    }
+
     store(req:Request, res:Response):any {
+        const bip39q = new Bip39Query()
         const request_data = new WalletModel()
         const email = AuthController.get_auth_user().getEmail()
         const token = JwtUtil.getJwt(email)
-        const bip39q = new Bip39Query()
         const mnemonic = generateMnemonic()
 
         request_data.setName(req.body["name"])
@@ -28,15 +45,13 @@ export class Bip39Controller implements Controller{
 
         db.query(bip39q.create(request_data), (error, result)=>{
             
-            if (error) return FailedResponse.queryFailed(res, "")
+            if (error) return FailedResponse.queryFailed(res, token)
             if (result.affectedRows == 0) return FailedResponse.storeFailed(res, "")
 
             return SuccessResponse.storeSuccess(res, token, null)
         })
     }
-    index(req: Request, res: Response):any {
-        throw new Error('Method not implemented.');
-    }
+    
     show(req: Request, res: Response): Response {
         throw new Error('Method not implemented.');
     }
