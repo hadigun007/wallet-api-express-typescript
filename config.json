@@ -1,0 +1,16 @@
+{
+    "api-key":"wjf98e9bvicpuwbapgc",
+    "database":{
+     "host":"localhost",
+     "port":3306,
+     "database":"express_starter_db",
+     "user":{
+        "name":"root",
+        "password":"root"
+     }   
+    },
+    "jwt":{
+        "key":"biytsfiytv89uyw80q2jkNOubus8t7",
+        "age":"1h"
+    }
+}
