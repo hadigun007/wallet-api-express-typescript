@@ -3,7 +3,7 @@
     "database":{
      "host":"localhost",
      "port":3306,
-     "database":"express_starter_db",
+     "database":"wallet_api_db",
      "user":{
         "name":"root",
         "password":"root"
