@@ -113,8 +113,9 @@ export class WalletModel implements Model{
     }
 
     validateStore(data: WalletModel): boolean {
+        console.log(data);
+        
         if (
-            data.getId() == null || data.getId() == undefined ||
             data.getName() == null || data.getName().length == 0 || data.getName() == "" ||
             data.getChain() == null ||
             data.getBip39() == null ||

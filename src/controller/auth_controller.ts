@@ -13,6 +13,7 @@ import { LoginRequest } from "../model/request/login_request";
 import { UserModel } from "../model/user_model";
 import { UserQuery } from "../database/query/user_query";
 import { Keyval } from "../model/keyval_model";
+import { RowDataPacket } from "mysql2";
 
 export class AuthController implements Controller {
     static auth_user = new UserModel()
@@ -24,20 +25,21 @@ export class AuthController implements Controller {
         key_val.setKey('email')
         key_val.setVal(email)
 
-        db.query(userq.show(key_val), (error, result)=>{
+        db.query<RowDataPacket[]>(userq.show(key_val), (error, result)=>{
             if(error) return 
+            const user = result[0]
             
-            this.auth_user.setId(result[0].id)
-            this.auth_user.setName(result[0].name)
-            this.auth_user.setEmail(result[0].email)
-            this.auth_user.setPassword(result[0].password)
-            this.auth_user.setRole(result[0].role)
-            this.auth_user.setSecretKey(result[0].secret_key)
-            this.auth_user.setOtpauthUrl(result[0].otpauth_url)
-            this.auth_user.setVToken(result[0].verify_token)
-            this.auth_user.setCreatedAt(result[0].created_at)
-            this.auth_user.setUpdatedAt(result[0].updated_at)
-            this.auth_user.setStatusId(result[0].status_id)
+            this.auth_user.setId(user.id)
+            this.auth_user.setName(user.name)
+            this.auth_user.setEmail(user.email)
+            this.auth_user.setPassword(user.password)
+            this.auth_user.setRole(user.role)
+            this.auth_user.setSecretKey(user.secret_key)
+            this.auth_user.setOtpauthUrl(user.otpauth_url)
+            this.auth_user.setVToken(user.verify_token)
+            this.auth_user.setCreatedAt(user.created_at)
+            this.auth_user.setUpdatedAt(user.updated_at)
+            this.auth_user.setStatusId(user.status_id)
         })
     }
 
@@ -68,10 +70,9 @@ export class AuthController implements Controller {
             verify_token.setVerifyToken(random)
             verify_token.setUserId(result[0].id)
 
-            db.query(verifytokenq.create(verify_token), (error2, result2) => {
+            db.query(verifytokenq.create(verify_token), (error2, _) => {
                 
                 if (error2) return FailedResponse.queryFailed(res, "")
-                if (result.length == 0) return FailedResponse.queryFailed(res, "")
                
                 AuthController.set_auth_user(user.getEmail())
                 data.setVerifyToken(verify_token.getVerifyToken())

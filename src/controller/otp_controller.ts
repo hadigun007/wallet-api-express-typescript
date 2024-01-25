@@ -10,6 +10,7 @@ import { SuccessResponse } from "../response/success_response";
 import { VerifyOTPRequest } from "../model/request/verifyotp_request";
 import { JwtUtil } from "../util/jwt_util";
 import { AuthController } from "./auth_controller";
+import { RowDataPacket } from "mysql2";
 const twofactor = require("node-2fa");
 
 export class OTPController {
@@ -25,7 +26,7 @@ export class OTPController {
 
         if (otp.validate(otp) == false) return FailedResponse.bodyFailed(res, "")
 
-        db.query(vtokenq.getByVtoken(otp.getVerifyToken()), (error, result) => {
+        db.query<RowDataPacket[]>(vtokenq.getByVtoken(otp.getVerifyToken()), (error, result) => {
             if (error) return FailedResponse.queryFailed(res, "")
             if (result[0] == null) return FailedResponse.queryFailed(res, "")
 
@@ -34,14 +35,12 @@ export class OTPController {
                 const newSecret = twofactor.generateSecret({ name: "Starter", account: "root" });
                 db.query(otpq.createSecret(newSecret.secret), (error2, result2) => {
                     if (error2) return FailedResponse.queryFailed(res, "")
-                    if (result2.affectedRows == 0) return FailedResponse.queryFailed(res, "")
 
                     vtoken.setVerifyToken(random)
                     vtoken.setUserId(result[0].id)
 
                     db.query(vtokenq.create(vtoken), (error3, result3) => {
                         if (error3) return FailedResponse.queryFailed(res, "")
-                        if (result3.affectedRows == 0) return FailedResponse.queryFailed(res, "")
 
                         data.setSecretKey(newSecret.secret)
                         data.setVerifyToken(random)
@@ -70,7 +69,7 @@ export class OTPController {
 
         if (otpr.validate(otpr) == false) return FailedResponse.bodyFailed(res, "")
 
-        db.query(vtokenq.getByVtoken(otpr.getVerifyToken()), (error, result) => {
+        db.query<RowDataPacket[]>(vtokenq.getByVtoken(otpr.getVerifyToken()), (error, result) => {
 
             if (error) return FailedResponse.queryFailed(res, "")
             if (result[0] == null) return FailedResponse.queryFailed(res, "")

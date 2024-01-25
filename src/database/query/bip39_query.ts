@@ -6,7 +6,7 @@ import { Keyval } from "../../model/keyval_model";
 
 export class Bip39Query implements Query {
     edit(data: Bip39Model): string {
-        return `UPDATE bip39 SET name = ${db.escape(data.getName())} WHERE id = ${db.escape(data.id)};`
+        return `UPDATE bip39 SET name = ${db.escape(data.getName())} WHERE id = ${db.escape(data.getId())};`
     }
     index(): string {
         return `SELECT * FROM bip39;`

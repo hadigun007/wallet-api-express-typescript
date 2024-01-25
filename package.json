@@ -37,9 +37,12 @@
     "jsonwebtoken": "^9.0.2",
     "moment": "^2.30.1",
     "mysql": "^2.18.1",
+    "mysql2": "^3.8.0",
     "node-2fa": "^2.0.3",
+    "promise-mysql": "^5.2.0",
     "tiny-secp256k1": "^2.2.3",
     "ts-node": "^10.9.2",
+    "util": "^0.12.5",
     "winston": "^3.11.0"
   }
 }

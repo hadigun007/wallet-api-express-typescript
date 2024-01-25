@@ -1,38 +1,38 @@
 import { Wordlist } from "ethers/lib.commonjs/wordlists"
 
 export class Bip39Model {
-    id!:string 
-    name!:string 
-    entropy!:string 
-    wordList!:Wordlist 
-    password!:string 
-    mnemonic!:string 
+     id!:string 
+     name!:string 
+     entropy!:string 
+    //  wordList!:Wordlist 
+     password!:string 
+     mnemonic!:string 
 
-    setId(id:string){
+    public setId(id:string){
         this.id = id
     }
-    getId(){
+    public getId(){
         return this.id
     }
     
-    setMnemonic(mnemonic:string){
+    public setMnemonic(mnemonic:string){
         this.mnemonic = mnemonic
     }
 
-    setName(name:string){
+    public setName(name:string){
         this.name = name
     }
-    setPassword(password:string){
+    public setPassword(password:string){
         this.password = password
     }
-    setEntrophy(name:string){
+    public setEntrophy(name:string){
         this.name = name
     }
-    setWordList(wordList:Wordlist){
-        this.wordList = wordList
-    }
+    // public setWordList(wordList:Wordlist){
+    //     this.wordList = wordList
+    // }
 
-    getMnemonic():string{
+    public getMnemonic():string{
         return this.mnemonic
     }
 
@@ -40,21 +40,21 @@ export class Bip39Model {
         return this.name
     }
     
-    getPassword():string{
+    public getPassword():string{
         return this.password
     }
-    getEntropy():string{
-        return this.password
+    public getEntropy():string{
+        return this.entropy
     }
-    getWordList():string{
-        return this.password
-    }
+    // public getWordList():string{
+    //     return this.wordList
+    // }
 
-    getPayload(){
+    public getPayload(){
         return this
     }
     
-    static validateStore(data:Bip39Model):boolean{
+    static  validateStore(data:Bip39Model):boolean{
         if(data.getName() == null ||data.getName().length == 0 || data.getPassword() == null ||data.getPassword().length == 0){
             return false
         }

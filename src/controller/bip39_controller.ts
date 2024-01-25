@@ -11,6 +11,8 @@ import { Bip39Model } from '../model/bip39_model';
 import { Crypto } from '../util/crypto';
 import { ToArray } from '../util/to_array';
 import { Keyval } from '../model/keyval_model';
+import { RowDataPacket } from 'mysql2';
+import config from '../../config.json'
 
 
 export class Bip39Controller implements Controller{
@@ -20,7 +22,7 @@ export class Bip39Controller implements Controller{
         const email = AuthController.get_auth_user().getEmail()
         const token = JwtUtil.getJwt(email)
 
-        db.query(bip39q.index(), (error, result)=>{
+        db.query<RowDataPacket[][]>(bip39q.index(), (error, result)=>{
             if (error) return FailedResponse.queryFailed(res, token)
             if (result.length == 0) return SuccessResponse.indexDataEmpty(res, "")
             
@@ -43,10 +45,9 @@ export class Bip39Controller implements Controller{
     
         if (Bip39Model.validateStore(request_data) == false) return FailedResponse.bodyFailed(res, token)
 
-        db.query(bip39q.create(request_data), (error, result)=>{
+        db.query<RowDataPacket[]>(bip39q.create(request_data), (error, result)=>{
             
             if (error) return FailedResponse.queryFailed(res, token)
-            if (result.affectedRows == 0) return FailedResponse.storeFailed(res, "")
 
             return SuccessResponse.storeSuccess(res, token, null)
         })
@@ -64,13 +65,38 @@ export class Bip39Controller implements Controller{
 
         if(Keyval.validate(key_val) == false) return FailedResponse.bodyFailed(res, "")
 
-        db.query(bip39q.show(key_val), (error, result)=>{
+        db.query<RowDataPacket[]>(bip39q.show(key_val), (error, result)=>{
             if (error) return FailedResponse.queryFailed(res, token)
             if (result.length == 0) return FailedResponse.queryFailed(res, "")
 
-
             SuccessResponse.showSuccess(res, token, result[0])
         })
+    }
+
+    async show2(key: string, id: string): Promise<any> {
+        const mysql = require('mysql2/promise');
+        const conn = await mysql.createConnection({ 
+            host: config.database.host,
+            user: config.database.user.name,
+            password:  config.database.user.password,
+            database: config.database.database
+         });
+        const key_val = new Keyval()
+        const bip39q = new Bip39Query()
+        const bip39 = new Bip39Model()
+        
+        key_val.setKey(key)
+        key_val.setVal(id)
+
+        const [rows] = await conn.execute(bip39q.show(key_val));
+        bip39.setId(rows[0].id)
+        bip39.setName(rows[0].name)
+        bip39.setMnemonic(rows[0].mnemonic)
+        bip39.setPassword(rows[0].password)
+        await conn.end();
+        return bip39
+    
+
     }
 
     update(req: Request, res: Response):any {
@@ -88,7 +114,6 @@ export class Bip39Controller implements Controller{
             console.log(error);
             
             if (error) return FailedResponse.queryFailed(res, token)
-            if (result.affectedRows == 0) return FailedResponse.queryFailed(res, token)
         
             SuccessResponse.editSuccess(res,token)
         })

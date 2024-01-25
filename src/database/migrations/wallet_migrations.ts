@@ -14,7 +14,7 @@ export class WalletMigration {
             id INT PRIMARY KEY AUTO_INCREMENT,
             chain_id INT NOT NULL,
             name VARCHAR(255) UNIQUE NOT NULL,
-            bip39_id INT UNIQUE NOT NULL,
+            bip39_id INT NOT NULL,
             address VARCHAR(255) UNIQUE NOT NULL,
             public_key VARCHAR(255) UNIQUE NOT NULL,
             private_key VARCHAR(255) UNIQUE NOT NULL,

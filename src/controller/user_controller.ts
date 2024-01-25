@@ -27,15 +27,11 @@ export class UserController implements Controller {
         if(new_user.valaidateCreate(new_user) == false) FailedResponse.bodyFailed(res, '') 
 
         db.query(userq.create(new_user), (error, result)=>{
-            
             if (error) return FailedResponse.queryFailed(res, "")
-            if (result.affectedRows == 0) return FailedResponse.storeFailed(res, "")
 
             return SuccessResponse.storeSuccess(res, '', null)
         })
     }
-
-
 
     show(req: Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>, res: Response<any, Record<string, any>>): Response<any, Record<string, any>> {
         throw new Error("Method not implemented.");
