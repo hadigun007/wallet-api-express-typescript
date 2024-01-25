@@ -8,6 +8,7 @@ import { JwtUtil } from "../util/jwt_util";
 import { FailedResponse } from "../response/failed_response";
 const bitcoin = require('bitcoinjs-lib');
 import {mnemonicToSeedSync} from 'bip39';
+import { SuccessResponse } from "../response/success_response";
 const bip32 = require('bip32');
 
 export class WalletController implements Controller {
@@ -19,43 +20,22 @@ export class WalletController implements Controller {
         const request_data = new WalletModel()
         const email = AuthController.get_auth_user().getEmail()
         const token = JwtUtil.getJwt(email)
-        // const bip39 = 
-        // const private_key = 
 
         request_data.setName(req.body["name"])
         request_data.setChain(req.body["chain_id"])
-        // request_data.setBip39Id(req.body["bip39_id"])
         request_data.setPath(req.body["path"])
 
-        // if(WalletModel.validateStore(request_data) == false) return FailedResponse.bodyFailed(res, token)
-
-        
-          
-          const mnemonic = `acoustic ivory rough mesh actress stick meadow arm bomb sea sleep luxury`;
-          
-          const seed = mnemonicToSeedSync(mnemonic)
-          
-          const root = bip32.fromSeed(seed, bitcoin.networks.bitcoin);
-          
-          const child1 = root.derivePath("m/84'/0'/0'/0/0");
-          const child2 = root.deriveHardened(84).deriveHardened(0).deriveHardened(0).derive(0).derive(0);
-          
-          console.log(seed);
-          console.log(child1);
-          console.log(child2);
-
+        if(request_data.validateStore(request_data) == false) return FailedResponse.bodyFailed(res, token)
 
         db.query(walletq.create(request_data), (error, result)=>{
+            if (error) return FailedResponse.queryFailed(res, "")
+            if (result.affectedRows == 0) return FailedResponse.storeFailed(res, "")
+
+            return SuccessResponse.storeSuccess(res, '', null)
 
         })
-
-
-
-        throw new Error("Method not implemented.");
     }
-    getAddress (node:any, network:any) {
-        return bitcoin.payments.p2wpkh({ pubkey: node.publicKey, network }).address
-      }
+
     show(req: Request, res: Response): Response {
         throw new Error("Method not implemented.");
     }

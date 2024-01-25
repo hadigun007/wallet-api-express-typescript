@@ -11,6 +11,9 @@ export class Bip39Model {
     setId(id:string){
         this.id = id
     }
+    getId(){
+        return this.id
+    }
     
     setMnemonic(mnemonic:string){
         this.mnemonic = mnemonic
@@ -52,13 +55,13 @@ export class Bip39Model {
     }
     
     static validateStore(data:Bip39Model):boolean{
-        if(data.getName() == null ||data.getName().length == 0){
+        if(data.getName() == null ||data.getName().length == 0 || data.getPassword() == null ||data.getPassword().length == 0){
             return false
         }
         return true
     }
     static validateUpdate(data:Bip39Model):boolean{
-        if(data.getName() == null ||data.getName().length == 0){
+        if(data.getPassword() == null ||data.getName().length == 0){
             return false
         }
         return true

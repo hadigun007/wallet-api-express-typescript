@@ -38,6 +38,7 @@ export class Bip39Controller implements Controller{
         const mnemonic = generateMnemonic()
 
         request_data.setName(req.body["name"])
+        request_data.setPassword(req.body["password"])
         request_data.setMnemonic(Crypto.encryptData(mnemonic))
     
         if (Bip39Model.validateStore(request_data) == false) return FailedResponse.bodyFailed(res, token)

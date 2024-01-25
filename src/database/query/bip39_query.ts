@@ -13,8 +13,9 @@ export class Bip39Query implements Query {
     }
     create(data: Bip39Model): string {
         return `
-        INSERT INTO bip39 (name, mnemonic, created_at, updated_at)
+        INSERT INTO bip39 (name, mnemonic, password, word_list, created_at, updated_at)
         VALUES (${db.escape(data.getName())}, ${db.escape(data.getMnemonic())},
+        ${db.escape(data.getPassword())}, null,
         '${Moment.getCurrent()}', '${Moment.getCurrent()}');
         `
     }
