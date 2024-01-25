@@ -7,11 +7,11 @@ import { Bip39Migrations } from "./bip39_migrations"
 
 function main(){
     
-    StatusMigration.migrate()
-    UserMigration.migrate()
-    BlockchainMigration.migrate()
-    Bip39Migrations.migrate()
-    WalletMigration.migrate()
+    StatusMigration.migrate() // 1 ✅
+    Bip39Migrations.migrate() // 2 ✅
+    BlockchainMigration.migrate() // 3 ✅
+    UserMigration.migrate() // 4 ✅
+    WalletMigration.migrate() // 5 ✅
 
     db.end()
 
