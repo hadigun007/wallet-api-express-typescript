@@ -14,6 +14,8 @@ export class Bip39Migrations {
             id INT PRIMARY KEY AUTO_INCREMENT,
             name VARCHAR(255) UNIQUE NOT NULL,
             mnemonic VARCHAR(255) UNIQUE NOT NULL,
+            password VARCHAR(255) UNIQUE NOT NULL,
+            word_list VARCHAR(255) UNIQUE NOT NULL,
             created_at datetime,
             updated_at datetime
             );`, (error, result) => {

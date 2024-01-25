@@ -1,7 +1,8 @@
 import { Bip39Model } from "./bip39_model"
 import { BlockchainModel } from "./blockchain_model"
+import { Model } from "./model"
 
-export class WalletModel {
+export class WalletModel implements Model{
     private id!: number
     private chain!: BlockchainModel
     private name!: string
@@ -12,8 +13,8 @@ export class WalletModel {
     private fingerprint!: string
     private parentFingerprint!: string
     private path!: string
-    private created_at!: string
-    private updated_at!: string
+    private created_at!: Date
+    private updated_at!: Date
 
     public getId(): number {
         return this.id;
@@ -95,23 +96,23 @@ export class WalletModel {
         this.path = path;
     }
 
-    public getCreated_at(): string {
+    public getCreated_at(): Date {
         return this.created_at;
     }
 
-    public setCreated_at(created_at: string): void {
+    public setCreated_at(created_at: Date): void {
         this.created_at = created_at;
     }
 
-    public getUpdated_at(): string {
+    public getUpdated_at(): Date {
         return this.updated_at;
     }
 
-    public setUpdated_at(updated_at: string): void {
+    public setUpdated_at(updated_at: Date): void {
         this.updated_at = updated_at;
     }
 
-    static validateStore(data: WalletModel): boolean {
+    validateStore(data: WalletModel): boolean {
         if (
             data.getId() == null || data.getId() == undefined ||
             data.getName() == null || data.getName().length == 0 || data.getName() == "" ||
@@ -121,5 +122,16 @@ export class WalletModel {
             return false
         }
         return true
+    }
+
+
+    validateShow(): boolean {
+        throw new Error("Method not implemented.")
+    }
+    validateEdit(): boolean {
+        throw new Error("Method not implemented.")
+    }
+    validateDelet(): boolean {
+        throw new Error("Method not implemented.")
     }
 }

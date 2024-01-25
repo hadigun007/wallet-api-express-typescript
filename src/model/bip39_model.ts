@@ -1,6 +1,11 @@
+import { Wordlist } from "ethers/lib.commonjs/wordlists"
+
 export class Bip39Model {
     id!:string 
     name!:string 
+    entropy!:string 
+    wordList!:Wordlist 
+    password!:string 
     mnemonic!:string 
 
     setId(id:string){
@@ -14,6 +19,15 @@ export class Bip39Model {
     setName(name:string){
         this.name = name
     }
+    setPassword(password:string){
+        this.password = password
+    }
+    setEntrophy(name:string){
+        this.name = name
+    }
+    setWordList(wordList:Wordlist){
+        this.wordList = wordList
+    }
 
     getMnemonic():string{
         return this.mnemonic
@@ -21,6 +35,16 @@ export class Bip39Model {
 
     getName():string{
         return this.name
+    }
+    
+    getPassword():string{
+        return this.password
+    }
+    getEntropy():string{
+        return this.password
+    }
+    getWordList():string{
+        return this.password
     }
 
     getPayload(){

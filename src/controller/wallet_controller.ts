@@ -19,15 +19,15 @@ export class WalletController implements Controller {
         const request_data = new WalletModel()
         const email = AuthController.get_auth_user().getEmail()
         const token = JwtUtil.getJwt(email)
-        const bip39 = 
+        // const bip39 = 
         // const private_key = 
 
         request_data.setName(req.body["name"])
         request_data.setChain(req.body["chain_id"])
-        request_data.setBip39Id(req.body["bip39_id"])
+        // request_data.setBip39Id(req.body["bip39_id"])
         request_data.setPath(req.body["path"])
 
-        if(WalletModel.validateStore(request_data) == false) return FailedResponse.bodyFailed(res, token)
+        // if(WalletModel.validateStore(request_data) == false) return FailedResponse.bodyFailed(res, token)
 
         
           
