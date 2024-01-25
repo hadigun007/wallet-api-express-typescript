@@ -19,7 +19,7 @@ export class WalletMigration {
             public_key VARCHAR(255) UNIQUE NOT NULL,
             private_key VARCHAR(255) UNIQUE NOT NULL,
             fingerprint VARCHAR(255) UNIQUE NOT NULL,
-            parent_fingerprint VARCHAR(255) UNIQUE NOT NULL,
+            parent_fingerprint VARCHAR(255) NOT NULL,
             path VARCHAR(255) UNIQUE NOT NULL,
             created_at datetime,
             updated_at datetime,

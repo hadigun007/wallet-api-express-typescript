@@ -29,8 +29,6 @@ export class WalletController implements Controller {
         const chain = await chainc.show2("id", req.body["chain_id"])
         const count = await WalletController.walletLength()
         const account = req.body["account_id"]
-        
-
 
         request_data.setName(req.body["name"])
         request_data.setChain(chain)
