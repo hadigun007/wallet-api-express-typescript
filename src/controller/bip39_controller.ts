@@ -1,10 +1,8 @@
 import { generateMnemonic } from 'bip39'
 import { SuccessResponse } from '../response/success_response';
-import { GenerateMnemonicResponse } from '../model/response/generate_mnemonic_response';
 import { Request, Response } from "express";
 import { FailedResponse } from '../response/failed_response';
 import { AuthController } from './auth_controller';
-import { WalletModel } from '../model/wallet_model';
 import { JwtUtil } from '../util/jwt_util';
 import Controller from './controller';
 import db from '../database/database'

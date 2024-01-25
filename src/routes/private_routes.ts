@@ -17,4 +17,7 @@ private_route.post('/bip39/show', bip39.show)
 private_route.post('/bip39/edit', bip39.update)
 
 
+private_route.post('/bip39/store', bip39.store)
+
+
 export default private_route
