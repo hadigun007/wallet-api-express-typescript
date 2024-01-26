@@ -5,8 +5,8 @@ export class BlockchainModel {
     name!:string 
     symbol!:string 
     base_path!:string 
-    created_at!:string 
-    updated_at!:string 
+    created_at!:Date 
+    updated_at!:Date 
 
     setId(id:number){
         this.id = id
@@ -23,21 +23,34 @@ export class BlockchainModel {
         this.base_path = base_path
     }
 
-
+    setCreatedAt(created_at:Date){
+        this.created_at = created_at
+    }
+    setUpdatedAt(updated_at:Date){
+        this.updated_at = updated_at
+    }
+    
+    
     getId():number{
         return this.id
     }
-
+    
     getName():string{
         return this.name
     }
-
+    
     getSymbol():string{
         return this.symbol
     }
-
+    
     getBasePath():string{
         return this.base_path
+    }
+    getCreatedAt():Date{
+        return  this.created_at
+    }
+    getUpdatedAt():Date{
+        return this.updated_at
     }
     getPayload(){
         return this

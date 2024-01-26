@@ -8,7 +8,39 @@ import { Crypto } from "../../util/crypto";
 export class WalletQuery implements Query {
 
     index(): string {
-        throw new Error("Method not implemented.");
+        return `
+        SELECT 
+            wallets.id AS wallet_id,
+            wallets.name AS wallet_name,
+            wallets.address AS wallet_address,
+            wallets.public_key AS wallet_public_key,
+            wallets.private_key AS wallet_private_key,
+            wallets.fingerprint AS wallet_fingerprint,
+            wallets.parent_fingerprint AS wallet_parent_fingerprint,
+            wallets.path AS wallet_path,
+            wallets.created_at AS wallet_created_at,
+            wallets.updated_at AS wallet_updated_at,
+
+            bip39.id AS bip39_id,
+            bip39.name AS bip39_name,
+            bip39.mnemonic AS bip39_mnemonic,
+            bip39.password AS bip39_password,
+            bip39.password AS bip39_password,
+            bip39.created_at AS  bip39_created_at,
+            bip39.updated_at AS  bip39_updated_at,
+            
+            blockchains.id AS blockchains_id,
+            blockchains.name AS blockchains_name,
+            blockchains.symbol AS blockchains_symbol,
+            blockchains.basepath AS blockchains_basepath,
+            blockchains.created_at AS blockchains_created_at,
+            blockchains.updated_at AS blockchains_updated_at
+        FROM 
+            wallets
+        LEFT JOIN
+            bip39 ON bip39.id = wallets.bip39_id
+        LEFT JOIN
+            blockchains ON blockchains.id = wallets.chain_id;`
     }
     create(data: WalletModel): string {
             return `

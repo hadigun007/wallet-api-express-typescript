@@ -11,11 +11,25 @@ import { CWEthereum } from "./wallet/create_wallet";
 import { Bip39Controller } from "./bip39_controller";
 import { ChainController } from "./chain_controller";
 import config from '../../config.json'
+import { RowDataPacket } from "mysql2";
+import { ToArray } from "../util/to_array";
 
 
 export class WalletController implements Controller {
-    index(req: Request, res: Response): Response {
-        throw new Error("Method not implemented.");
+    index(req: Request, res: Response):any {
+        const walletq = new WalletQuery()
+        const email = AuthController.get_auth_user().getEmail()
+        const token = JwtUtil.getJwt(email)
+
+        db.query<RowDataPacket[][]>(walletq.index(), async (error, result)=>{
+            
+            if (error) return FailedResponse.queryFailed(res, token)
+            if (result.length == 0) return SuccessResponse.indexDataEmpty(res, "")
+            
+            const response_data = ToArray.listWallletToArray(result)
+        
+            SuccessResponse.indexSuccess(res, token, response_data)
+        })
     }
     async store(req: Request, res: Response): Promise<any> {
         const walletq = new WalletQuery()
@@ -37,16 +51,12 @@ export class WalletController implements Controller {
 
         const w = new_wallet.createWallet(request_data)
 
-        console.log(w);
-
         if (request_data.validateStore(w) == false) return FailedResponse.bodyFailed(res, token)
 
         db.query(walletq.create(w), (error, _) => {
-            console.log(error);
-            
-            if (error) return FailedResponse.queryFailed(res, "")
+            if (error) return FailedResponse.queryFailed(res, token)
 
-            return SuccessResponse.storeSuccess(res, '', null)
+            return SuccessResponse.storeSuccess(res, token, null)
         })
     }
 
