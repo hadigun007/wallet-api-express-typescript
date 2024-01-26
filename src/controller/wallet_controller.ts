@@ -13,6 +13,7 @@ import { ChainController } from "./chain_controller";
 import config from '../../config.json'
 import { RowDataPacket } from "mysql2";
 import { ToArray } from "../util/to_array";
+import { Keyval } from "../model/keyval_model";
 
 
 export class WalletController implements Controller {
@@ -22,7 +23,7 @@ export class WalletController implements Controller {
         const token = JwtUtil.getJwt(email)
 
         db.query<RowDataPacket[][]>(walletq.index(), async (error, result)=>{
-            
+
             if (error) return FailedResponse.queryFailed(res, token)
             if (result.length == 0) return SuccessResponse.indexDataEmpty(res, "")
             
@@ -78,8 +79,30 @@ export class WalletController implements Controller {
     }
 
 
-    show(req: Request, res: Response): Response {
-        throw new Error("Method not implemented.");
+    show(req: Request, res: Response):any {
+        const key_val = new Keyval()
+        const walletq = new WalletQuery()
+        const email = AuthController.get_auth_user().getEmail()
+        const token = JwtUtil.getJwt(email)
+
+        key_val.setKey(req.body["key"])
+        key_val.setVal(req.body["value"])
+
+        if(Keyval.validate(key_val) == false) return FailedResponse.bodyFailed(res, "")
+
+        db.query<RowDataPacket[]>(walletq.show(key_val), (error, result, f)=>{
+            console.log(error);
+            console.log(result);
+            
+            if (error) return FailedResponse.queryFailed(res, token)
+            if (result.length == 0) return FailedResponse.queryFailed(res, "")
+
+            const response_data = ToArray.listWallletToArray(result[0])
+            console.log(response_data);
+            
+
+            SuccessResponse.showSuccess(res, token, response_data)
+        })
     }
     update(req: Request, res: Response): Response {
         throw new Error("Method not implemented.");

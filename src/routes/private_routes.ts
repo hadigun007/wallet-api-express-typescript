@@ -15,13 +15,14 @@ private_route.use(middleware)
 
 private_route.post('/user/create', userc.store)
 
-private_route.get('/bip39/index', bip39.index)
+private_route.get('/bip39s', bip39.index)
 private_route.post('/bip39/store', bip39.store)
 private_route.post('/bip39/show', bip39.show)
 private_route.post('/bip39/edit', bip39.update)
 
 private_route.get('/wallets', wallet.index)
 private_route.post('/wallet/store', wallet.store)
+private_route.post('/wallet/show', wallet.show)
 
 private_route.post('/chains/show', chains.show)
 
