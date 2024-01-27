@@ -1,3 +1,4 @@
+import { Moment } from "../../util/moment"
 import db from "../database"
 
 export class StatusMigration {
@@ -28,12 +29,12 @@ export class StatusMigration {
         
         db.query(`
         INSERT INTO statuses
-        (id, status_key, status_id, status_name, created_at)
+        (id, status_key, status_id, status_name, created_at, updated_at)
         VALUES 
-        (1, 'users',0 , 'GENEREATE 2FA', null),
-        (2, 'users',1 , 'VERIFY 2FA', null),
-        (3, 'users',2 , 'ACTVE', null),
-        (4, 'users',3 , 'FREEZED', null);
+        (1, 'users',0 , 'GENEREATE 2FA', '${Moment.getCurrent()}', '${Moment.getCurrent()}'),
+        (2, 'users',1 , 'VERIFY 2FA', '${Moment.getCurrent()}', '${Moment.getCurrent()}'),
+        (3, 'users',2 , 'ACTVE', '${Moment.getCurrent()}', '${Moment.getCurrent()}'),
+        (4, 'users',3 , 'FREEZED', '${Moment.getCurrent()}', '${Moment.getCurrent()}');
         `,(error, result)=>{
 
             if (error) return console.log(error)

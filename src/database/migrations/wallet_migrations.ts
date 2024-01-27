@@ -16,6 +16,7 @@ export class WalletMigration {
             name VARCHAR(255) UNIQUE NOT NULL,
             bip39_id INT NOT NULL,
             address VARCHAR(255) UNIQUE NOT NULL,
+            balance BIGINT NOT NULL,
             public_key VARCHAR(255) UNIQUE NOT NULL,
             private_key VARCHAR(255) UNIQUE NOT NULL,
             fingerprint VARCHAR(255) UNIQUE NOT NULL,
@@ -28,7 +29,7 @@ export class WalletMigration {
             FOREIGN KEY (bip39_id) REFERENCES bip39(id)
             );`, (error, result) => {
             if (error) return console.log(error)
-            console.log(`✅ migrate table ${this.table_name} berhasil`)
+            console.log(`✅ migrate table ${this.table_name} berhasil\n`)
         })
     }
 

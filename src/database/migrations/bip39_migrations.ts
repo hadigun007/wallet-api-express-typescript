@@ -5,6 +5,14 @@ export class Bip39Migrations {
     static table_name = 'bip39'
 
     static migrate(){
+        db.query(`DROP TABLE IF EXISTS providers`, (error, result) => {
+            if (error) return console.log(error)
+        })
+
+        db.query(`DROP TABLE IF EXISTS wallets`, (error, result) => {
+            if (error) return console.log(error)
+        })
+       
         db.query(`DROP TABLE IF EXISTS wallets`, (error, result) => {
             if (error) return console.log(error)
         })

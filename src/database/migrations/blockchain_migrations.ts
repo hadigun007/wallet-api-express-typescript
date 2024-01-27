@@ -1,3 +1,4 @@
+import { Moment } from "../../util/moment";
 import db from "../database"
 
 
@@ -24,13 +25,13 @@ export class BlockchainMigration {
 
         db.query(`
         INSERT INTO blockchains
-        (id, name, symbol, basepath, created_at)
+        (id, name, symbol, basepath, created_at, updated_at)
         VALUES 
-        (1, 'Bitcoin', 'BTC' , "m/44'/0'/0'/0/0", null),
-        (2, 'Ethereum', 'ETH' , "m/44'/1'/0'/0/0", null),
-        (3, 'Binance', 'BNB' , "m/44'/2'/0'/0/0", null),
-        (4, 'Solana', 'SOL' , "m/44'/3'/0'/0/0", null),
-        (5, 'Tron', 'TRON' , "m/44'/4'/0'/0/0", null);`,
+        (1, 'Bitcoin', 'BTC' , "m/44'/0'/0'/0/0", '${Moment.getCurrent()}', '${Moment.getCurrent()}'),
+        (2, 'Ethereum', 'ETH' , "m/44'/1'/0'/0/0", '${Moment.getCurrent()}', '${Moment.getCurrent()}'),
+        (3, 'Binance', 'BNB' , "m/44'/2'/0'/0/0", '${Moment.getCurrent()}', '${Moment.getCurrent()}'),
+        (4, 'Solana', 'SOL' , "m/44'/3'/0'/0/0", '${Moment.getCurrent()}', '${Moment.getCurrent()}'),
+        (5, 'Tron', 'TRON' , "m/44'/4'/0'/0/0", '${Moment.getCurrent()}', '${Moment.getCurrent()}');`,
         (error, result)=>{
             if (error) return console.log(error)
             console.log(`✅ seeder table ${this.table_name} berhasil\n`)
