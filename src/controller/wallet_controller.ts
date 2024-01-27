@@ -55,6 +55,8 @@ export class WalletController implements Controller {
         if (request_data.validateStore(w) == false) return FailedResponse.bodyFailed(res, token)
 
         db.query(walletq.create(w), (error, _) => {
+            console.log(error);
+            
             if (error) return FailedResponse.queryFailed(res, token)
 
             return SuccessResponse.storeSuccess(res, token, null)
@@ -98,7 +100,6 @@ export class WalletController implements Controller {
             if (result.length == 0) return FailedResponse.queryFailed(res, "")
 
             const response_data = ToArray.listWallletToArray(result[0])
-            console.log(response_data);
             
 
             SuccessResponse.showSuccess(res, token, response_data)

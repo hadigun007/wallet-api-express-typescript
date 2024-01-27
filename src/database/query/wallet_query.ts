@@ -47,7 +47,7 @@ export class WalletQuery implements Query {
             return `
             INSERT INTO 
             wallets 
-            (chain_id, name, bip39_id, address, public_key, private_key,
+            (chain_id, name, bip39_id, address, public_key, private_key, balance,
                 fingerprint, parent_fingerprint, path, created_at, updated_at)
             VALUES (
                 ${db.escape(data.getChain().getId())},  
@@ -56,6 +56,7 @@ export class WalletQuery implements Query {
                 ${db.escape(data.getAddress())},
                 ${db.escape(data.getPublic_key())},  
                 ${db.escape(Crypto.encryptData(data.getPrivate_key()))},
+                0,  
                 ${db.escape(data.getFingerprint())},  
                 ${db.escape(data.getParentFingerprint())},
                 ${db.escape(data.getPath())},  

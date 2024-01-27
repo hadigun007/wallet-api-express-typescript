@@ -14,7 +14,9 @@ export class TransactionMigration {
         db.query(`
         CREATE TABLE transactions (
             id INT PRIMARY KEY AUTO_INCREMENT,
-            type VARCHAR(255) NOT NULL,
+            tx_hash VARCHAR(255) NOT NULL,
+            block VARCHAR(255) NOT NULL,
+            type_id VARCHAR(255) NOT NULL,
             sender VARCHAR(255) NOT NULL,
             receiver MEDIUMINT NOT NULL,
             amount VARCHAR(255)  NOT NULL,

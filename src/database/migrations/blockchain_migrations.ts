@@ -28,7 +28,7 @@ export class BlockchainMigration {
         (id, name, symbol, basepath, created_at, updated_at)
         VALUES 
         (1, 'Bitcoin', 'BTC' , "m/44'/0'/0'/0/0", '${Moment.getCurrent()}', '${Moment.getCurrent()}'),
-        (2, 'Ethereum', 'ETH' , "m/44'/1'/0'/0/0", '${Moment.getCurrent()}', '${Moment.getCurrent()}'),
+        (2, 'Ethereum', 'ETH' , "m/44'/60'/1'/1", '${Moment.getCurrent()}', '${Moment.getCurrent()}'),
         (3, 'Binance', 'BNB' , "m/44'/2'/0'/0/0", '${Moment.getCurrent()}', '${Moment.getCurrent()}'),
         (4, 'Solana', 'SOL' , "m/44'/3'/0'/0/0", '${Moment.getCurrent()}', '${Moment.getCurrent()}'),
         (5, 'Tron', 'TRON' , "m/44'/4'/0'/0/0", '${Moment.getCurrent()}', '${Moment.getCurrent()}');`,
