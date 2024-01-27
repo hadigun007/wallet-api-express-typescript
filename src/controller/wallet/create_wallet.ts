@@ -1,6 +1,5 @@
 import { Mnemonic, HDNodeWallet} from "ethers";
 import { WalletModel } from "../../model/wallet_model";
-import { Bip39Model } from "../../model/bip39_model";
 import { Crypto } from "../../util/crypto";
 
 

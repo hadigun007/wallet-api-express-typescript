@@ -56,7 +56,6 @@ export class Bip39Controller implements Controller{
     show(req: Request, res: Response):any {
         const key_val = new Keyval()
         const bip39q = new Bip39Query()
-        const request_data = new Bip39Model()
         const email = AuthController.get_auth_user().getEmail()
         const token = JwtUtil.getJwt(email)
 
@@ -111,8 +110,6 @@ export class Bip39Controller implements Controller{
         if(Bip39Model.validateUpdate(request_data) == false) return FailedResponse.bodyFailed(res, token)
 
         db.query(bip39q.edit(request_data), (error, result)=>{
-            console.log(error);
-            
             if (error) return FailedResponse.queryFailed(res, token)
         
             SuccessResponse.editSuccess(res,token)

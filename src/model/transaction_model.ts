@@ -1,14 +1,18 @@
-class TransactionModel {
-    private id!:number
-    private tx_hash!:string
-    private block!:number
-    private type_id!:number
-    private sender!:string
-    private from!:string
-    private amount!:number
-    private gass_fee!:number
-    private created_at!:Date 
-    private updated_at!:Date 
+import { ProviderModel } from "./provider_model"
+import { WalletModel } from "./wallet_model"
+
+export class TransactionModel {
+    private id!: number
+    private tx_hash!: string
+    private block!: number
+    private type_id!: number
+    private sender!: WalletModel
+    private receiver!: string
+    private amount!: string
+    private gass_fee!: string
+    private provider!: ProviderModel
+    private created_at!: Date
+    private updated_at!: Date
 
     public getId(): number {
         return this.id!;
@@ -33,6 +37,13 @@ class TransactionModel {
     public setBlock(block: number): void {
         this.block = block;
     }
+    public getProvider(): ProviderModel {
+        return this.provider;
+    }
+
+    public setProvider(provider_id: ProviderModel): void {
+        this.provider = provider_id;
+    }
 
     public getType_id(): number {
         return this.type_id;
@@ -42,35 +53,35 @@ class TransactionModel {
         this.type_id = type_id;
     }
 
-    public getSender(): string {
+    public getSender(): WalletModel {
         return this.sender;
     }
 
-    public setSender(sender: string): void {
+    public setSender(sender: WalletModel): void {
         this.sender = sender;
     }
 
-    public getFrom(): string {
-        return this.from;
+    public getReciever(): string {
+        return this.receiver;
     }
 
-    public setFrom(from: string): void {
-        this.from = from;
+    public setReciver(receiver: string): void {
+        this.receiver = receiver;
     }
 
-    public getAmount(): number {
+    public getAmount(): string {
         return this.amount;
     }
 
-    public setAmount(amount: number): void {
+    public setAmount(amount: string): void {
         this.amount = amount;
     }
 
-    public getGass_fee(): number {
+    public getGass_fee(): string {
         return this.gass_fee;
     }
 
-    public setGass_fee(gass_fee: number): void {
+    public setGass_fee(gass_fee: string): void {
         this.gass_fee = gass_fee;
     }
 
@@ -88,6 +99,16 @@ class TransactionModel {
 
     public setUpdated_at(updated_at: Date): void {
         this.updated_at = updated_at;
+    }
+
+    static validateStore(data: TransactionModel): boolean {
+        if (
+            data.sender == null || data.sender == undefined ||
+            data.receiver == null || data.receiver == undefined || data.receiver == "" ||
+            data.receiver == null || data.receiver == undefined ||
+            data.provider == null || data.provider == undefined
+        ) return false
+        return true
     }
 
 }

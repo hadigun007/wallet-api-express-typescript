@@ -14,9 +14,13 @@ import config from '../../config.json'
 import { RowDataPacket } from "mysql2";
 import { ToArray } from "../util/to_array";
 import { Keyval } from "../model/keyval_model";
+import { Crypto } from "../util/crypto";
 
 
 export class WalletController implements Controller {
+    store(req: Request, res: Response<any, Record<string, any>>): Response<any, Record<string, any>> {
+        throw new Error("Method not implemented.");
+    }
     index(req: Request, res: Response):any {
         const walletq = new WalletQuery()
         const email = AuthController.get_auth_user().getEmail()
@@ -32,7 +36,8 @@ export class WalletController implements Controller {
             SuccessResponse.indexSuccess(res, token, response_data)
         })
     }
-    async store(req: Request, res: Response): Promise<any> {
+    
+    async store2(req: Request, res: Response): Promise<any> {
         const walletq = new WalletQuery()
         const request_data = new WalletModel()
         const email = AuthController.get_auth_user().getEmail()
@@ -55,7 +60,7 @@ export class WalletController implements Controller {
         if (request_data.validateStore(w) == false) return FailedResponse.bodyFailed(res, token)
 
         db.query(walletq.create(w), (error, _) => {
-            console.log(error);
+            console.log();
             
             if (error) return FailedResponse.queryFailed(res, token)
 
@@ -104,6 +109,28 @@ export class WalletController implements Controller {
 
             SuccessResponse.showSuccess(res, token, response_data)
         })
+    }
+
+    static async show2(key: string, id: string): Promise<any> {
+        const mysql = require('mysql2/promise');
+        const conn = await mysql.createConnection({ 
+            host: config.database.host,
+            user: config.database.user.name,
+            password:  config.database.user.password,
+            database: config.database.database
+         });
+        const key_val = new Keyval()
+        const providerq = new WalletQuery()
+        const wallet = new WalletModel()
+        
+        key_val.setKey(key)
+        key_val.setVal(id)
+
+        const [rows] = await conn.execute(providerq.show2(key_val));
+        wallet.setAddress(rows[0].address)
+        wallet.setPrivate_key(Crypto.decryptData(rows[0].private_key))
+        await conn.end();
+        return wallet
     }
     update(req: Request, res: Response): Response {
         throw new Error("Method not implemented.");

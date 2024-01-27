@@ -13,12 +13,12 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@types/express": "^4.17.21",
     "typescript": "^5.3.3"
   },
   "dependencies": {
     "@types/aes-js": "^3.1.4",
     "@types/dotenv": "^8.2.0",
-    "@types/express": "^4.17.21",
     "@types/express-rate-limit": "^6.0.0",
     "@types/jsonwebtoken": "^9.0.5",
     "@types/moment": "^2.13.0",
@@ -43,6 +43,7 @@
     "tiny-secp256k1": "^2.2.3",
     "ts-node": "^10.9.2",
     "util": "^0.12.5",
+    "web3": "^4.4.0",
     "winston": "^3.11.0"
   }
 }

@@ -74,12 +74,7 @@ export class OTPController {
             if (error) return FailedResponse.queryFailed(res, "")
             if (result[0] == null) return FailedResponse.queryFailed(res, "")
 
-            console.log("error");
             if (result[0].secret_key != "") {
-                console.log(error);
-                console.log(result);
-                
-
                 const verify = twofactor.verifyToken(result[0].secret_key, otpr.getOTPCode().toString());
                 
                 if (verify.delta == 0) {

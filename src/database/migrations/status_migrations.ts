@@ -1,6 +1,8 @@
 import { Moment } from "../../util/moment"
 import db from "../database"
 
+
+
 export class StatusMigration {
 
     static table_name = 'statuses'

@@ -109,6 +109,11 @@ export class WalletQuery implements Query {
         WHERE
            ${key} = ${db.escape(keyval.getVal())};`
     }
+    show2(keyval: Keyval): string {
+        return `
+        SELECT * FROM wallets WHERE ${keyval.getKey()} = ${db.escape(keyval.getVal())};
+        `
+    }
     delete(data: any): string {
         throw new Error("Method not implemented.");
     }
