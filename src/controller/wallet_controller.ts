@@ -15,6 +15,7 @@ import { ToArray } from "../util/to_array";
 import { Keyval } from "../model/keyval_model";
 import { Crypto } from "../util/crypto";
 import { CWEthereum } from "./wallet/ethereum";
+import { CWBitcoin } from "./wallet/bitcoin";
 
 
 export class WalletController implements Controller {
@@ -42,13 +43,15 @@ export class WalletController implements Controller {
         const request_data = new WalletModel()
         const email = AuthController.get_auth_user().getEmail()
         const token = JwtUtil.getJwt(email)
-        const new_wallet = new CWEthereum()
+        const eth = new CWEthereum()
+        const btc = new CWBitcoin()
         const chainc = new ChainController()
         const bip39c = new Bip39Controller()
         const bip39 = await bip39c.show2("id", req.body["bip39_id"])
         const chain = await chainc.show2("id", req.body["chain_id"])
         const count = await WalletController.walletLength(chain.getId().toString())
         const account = req.body["account_id"]
+        let raw_wallet = new WalletModel()
 
         request_data.setName(req.body["name"])
         request_data.setChain(chain)
@@ -56,11 +59,12 @@ export class WalletController implements Controller {
         request_data.setIndexId(count.toString())
         request_data.setAccountId(account)
 
-        const w = new_wallet.createWallet(request_data)
+        if(chain.getName() == "Ethereum") raw_wallet = eth.createWallet(request_data)
+        if(chain.getName() == "Bitcoin") raw_wallet = btc.createWallet(request_data)
 
-        if (request_data.validateStore(w) == false) return FailedResponse.bodyFailed(res, token)
+        if (request_data.validateStore(raw_wallet) == false) return FailedResponse.bodyFailed(res, token)
 
-        db.query(walletq.create(w), (error, _) => {
+        db.query(walletq.create(raw_wallet), (error, _) => {
             console.log(error);
             
             if (error) return FailedResponse.queryFailed(res, token)

@@ -11,14 +11,12 @@ export interface Wallet {
 }
 
 
-
 export class CWBitcoin extends WalletCreator {
-    public createWallet(): WalletModel {
-        throw new Error("Method not implemented.");
+    public createWallet(raw_wallet:WalletModel): WalletModel {
+        return new WalletModel()
     }
-    public getWallet(): WalletModel {
-        throw new Error("Method not implemented.");
-    }
+
+
 }
 
 
