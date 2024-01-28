@@ -7,7 +7,6 @@ import { AuthController } from "./auth_controller";
 import { JwtUtil } from "../util/jwt_util";
 import { FailedResponse } from "../response/failed_response";
 import { SuccessResponse } from "../response/success_response";
-import { CWEthereum } from "./wallet/create_wallet";
 import { Bip39Controller } from "./bip39_controller";
 import { ChainController } from "./chain_controller";
 import config from '../../config.json'
@@ -15,6 +14,7 @@ import { RowDataPacket } from "mysql2";
 import { ToArray } from "../util/to_array";
 import { Keyval } from "../model/keyval_model";
 import { Crypto } from "../util/crypto";
+import { CWEthereum } from "./wallet/ethereum";
 
 
 export class WalletController implements Controller {
@@ -47,20 +47,21 @@ export class WalletController implements Controller {
         const bip39c = new Bip39Controller()
         const bip39 = await bip39c.show2("id", req.body["bip39_id"])
         const chain = await chainc.show2("id", req.body["chain_id"])
-        const count = await WalletController.walletLength()
+        const count = await WalletController.walletLength(chain.getId().toString())
         const account = req.body["account_id"]
 
         request_data.setName(req.body["name"])
         request_data.setChain(chain)
         request_data.setBip39(bip39)
-        request_data.setPath(`m/44'/60'/${account}'/${count+1}`)
+        request_data.setIndexId(count.toString())
+        request_data.setAccountId(account)
 
         const w = new_wallet.createWallet(request_data)
 
         if (request_data.validateStore(w) == false) return FailedResponse.bodyFailed(res, token)
 
         db.query(walletq.create(w), (error, _) => {
-            console.log();
+            console.log(error);
             
             if (error) return FailedResponse.queryFailed(res, token)
 
@@ -68,7 +69,7 @@ export class WalletController implements Controller {
         })
     }
 
-    static async  walletLength(): Promise<number> {
+    static async  walletLength(chain_id:string): Promise<number> {
         const mysql = require('mysql2/promise');
         const conn = await mysql.createConnection({ 
             host: config.database.host,
@@ -77,7 +78,7 @@ export class WalletController implements Controller {
             database: config.database.database
          });
         const walletq = new WalletQuery()
-        const [rows] = await conn.execute(walletq.length());
+        const [rows] = await conn.execute(walletq.length(chain_id));
         await conn.end();
         
         return rows[0].count

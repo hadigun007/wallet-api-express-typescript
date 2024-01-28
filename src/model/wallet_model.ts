@@ -13,6 +13,8 @@ export class WalletModel implements Model{
     private fingerprint!: string
     private parentFingerprint!: string
     private path!: string
+    private account_id!: string
+    private index_id!: string
     private created_at!: Date
     private updated_at!: Date
 
@@ -22,6 +24,20 @@ export class WalletModel implements Model{
 
     public setId(id: number) {
         this.id = id;
+    }
+    public getIndexId(): string {
+        return this.index_id;
+    }
+
+    public setIndexId(index_id: string) {
+        this.index_id = index_id;
+    }
+    public getAccountId(): string {
+        return this.account_id;
+    }
+
+    public setAccountId(account_id: string) {
+        this.account_id = account_id;
     }
 
     public getChain(): BlockchainModel {

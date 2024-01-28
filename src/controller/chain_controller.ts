@@ -39,7 +39,7 @@ export class ChainController implements Controller {
     
 
     }
-    async show2(key: string, id: string): Promise<any> {
+    async show2(key: string, id: string): Promise<BlockchainModel> {
         const mysql = require('mysql2/promise');
         const conn = await mysql.createConnection({ 
             host: config.database.host,

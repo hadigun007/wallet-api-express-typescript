@@ -118,8 +118,8 @@ export class WalletQuery implements Query {
         throw new Error("Method not implemented.");
     }
 
-    length(){
-        return `SELECT COUNT(*) AS count FROM wallets;`
+    length(chain_id:string){
+        return `SELECT COUNT(*) AS count FROM wallets WHERE chain_id = ${db.escape(chain_id)};`
     }
 }
 
